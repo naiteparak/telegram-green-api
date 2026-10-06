@@ -10,10 +10,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@tailwindcss/vite": "^4.3.3",
     "@vitejs/plugin-react": "latest",
+    "lucide-react": "^1.52.0",
     "prettier": "^3.9.9",
     "react": "latest",
     "react-dom": "latest",
+    "tailwindcss": "^4.3.3",
     "typescript": "latest",
     "vite": "latest"
   },

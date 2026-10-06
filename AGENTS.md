@@ -404,6 +404,10 @@ For a normal test assignment, clarity is more important than premature optimizat
 
 Keep styling consistent.
 
+Use Tailwind utility classes for component styling. Keep the main CSS file limited to the Tailwind import, the `@config` directive, and global base styles.
+
+Define reusable colors in `theme.extend.colors` in `tailwind.config.ts` with semantic names (for example, `primary`, `surface`, `foreground`, and `border`). Use the generated utilities such as `bg-primary`, `text-foreground`, and `border-border` throughout components. Reuse existing tokens before adding a new one; do not hardcode hex/RGB colors or arbitrary color utilities in components. Define shared gradients and shadows in the same config using the shared color palette; global base styles should use the generated utilities.
+
 Prefer:
 - reusable spacing
 - reusable typography
