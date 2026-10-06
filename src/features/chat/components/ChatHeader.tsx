@@ -1,13 +1,12 @@
 import { ArrowLeft } from 'lucide-react';
-import Avatar from '../../../components/ui/Avatar';
-import Button from '../../../components/ui/Button';
+import { Avatar, Button } from '@components';
 import type { Chat } from '../types';
 
 type ChatHeaderProps = { chat: Chat; onBack: () => void };
 
 export default function ChatHeader({ chat, onBack }: ChatHeaderProps) {
   return (
-    <header className="flex shrink-0 items-center gap-3 border-b border-border bg-surface px-4 py-4 min-[681px]:px-6">
+    <header className="flex shrink-0 items-center gap-3 border-b border-border bg-surface px-4 py-2">
       <Button
         variant="ghost"
         size="icon"

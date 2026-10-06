@@ -23,6 +23,9 @@ const colors = {
   illustration: '#7aaeea',
   'illustration-surface': '#edf6ff',
   success: '#43bd83',
+  error: '#b42318',
+  'message-incoming': '#ffffff',
+  'message-outgoing': '#dcecff',
   shadow: '#25354c',
 };
 

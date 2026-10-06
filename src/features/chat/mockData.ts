@@ -4,6 +4,7 @@ export const mockChats: Chat[] = [
   { id: 'anna', phone: '+7 900 000 00 01', title: 'Anna Petrova' },
   { id: 'alex', phone: '+7 900 000 00 02', title: 'Alex Ivanov' },
   { id: 'maria', phone: '+7 900 000 00 03', title: 'Maria Smirnova' },
+  { id: 'daniel', phone: '+7 900 000 00 04', title: 'Daniel Volkov' },
 ];
 
 export const mockMessages: Message[] = [

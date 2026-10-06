@@ -1,22 +1,24 @@
 import type { ReactNode } from 'react';
-import { Search, SquarePen } from 'lucide-react';
-import Button from '../components/ui/Button';
+import { Search } from 'lucide-react';
+import { Button } from '@components';
 
 type AppLayoutProps = {
   children: ReactNode;
   chatList: ReactNode;
+  newChat: ReactNode;
   isChatOpen: boolean;
 };
 
 export default function AppLayout({
   children,
   chatList,
+  newChat,
   isChatOpen,
 }: AppLayoutProps) {
   return (
-    <div className="mx-auto min-h-screen w-full max-w-[1440px] bg-surface shadow-app min-[681px]:grid min-[681px]:grid-cols-[minmax(280px,356px)_minmax(0,1fr)]">
+    <div className="mx-auto h-dvh w-full max-w-[1440px] overflow-hidden bg-surface shadow-app min-[681px]:grid min-[681px]:grid-cols-[minmax(280px,356px)_minmax(0,1fr)]">
       <aside
-        className={`${isChatOpen ? 'hidden' : 'flex'} min-h-screen flex-col bg-surface min-[681px]:flex min-[681px]:border-r min-[681px]:border-border`}
+        className={`${isChatOpen ? 'hidden' : 'flex'} h-full min-h-0 flex-col bg-surface min-[681px]:flex min-[681px]:border-r min-[681px]:border-border`}
         aria-label="Chats"
       >
         <header className="flex items-center justify-between px-6 pt-7 pb-[19px]">
@@ -33,13 +35,10 @@ export default function AppLayout({
           </Button>
         </header>
 
-        <Button className="mx-[18px] mb-4 justify-start">
-          <SquarePen className="size-5" strokeWidth={1.8} aria-hidden="true" />
-          New chat
-        </Button>
+        {newChat}
 
         <section
-          className="flex flex-1 px-3 py-3.5"
+          className="flex min-h-0 flex-1 overflow-y-auto px-3 py-3.5"
           aria-label="Your conversations"
         >
           {chatList}
@@ -55,7 +54,7 @@ export default function AppLayout({
       </aside>
 
       <main
-        className={`${isChatOpen ? 'flex' : 'hidden'} min-h-screen min-w-0 flex-col overflow-hidden bg-conversation min-[681px]:flex`}
+        className={`${isChatOpen ? 'flex' : 'hidden'} h-full min-h-0 min-w-0 flex-col overflow-hidden bg-conversation min-[681px]:flex`}
       >
         {children}
       </main>

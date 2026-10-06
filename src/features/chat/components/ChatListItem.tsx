@@ -1,4 +1,4 @@
-import Avatar from '../../../components/ui/Avatar';
+import { Avatar } from '@components';
 import type { Chat, Message } from '../types';
 
 type ChatListItemProps = {
