@@ -1,6 +1,6 @@
 import type { Credentials } from '../types';
 
-const API_URL = 'https://api.green-api.com';
+import { greenApiUrl } from '@/lib';
 
 export async function checkCredentials(
   credentials: Credentials,
@@ -8,10 +8,11 @@ export async function checkCredentials(
 ): Promise<void> {
   let response: Response;
   try {
-    response = await fetch(
-      `${API_URL}/waInstance${encodeURIComponent(credentials.idInstance)}/getStateInstance/${encodeURIComponent(credentials.apiTokenInstance)}`,
-      { signal, cache: 'no-store', credentials: 'omit' },
-    );
+    response = await fetch(greenApiUrl(credentials, 'getStateInstance'), {
+      signal,
+      cache: 'no-store',
+      credentials: 'omit',
+    });
   } catch {
     throw new Error(
       'Could not reach GREEN-API. Check your internet connection and try again.',

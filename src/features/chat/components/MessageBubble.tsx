@@ -25,6 +25,7 @@ export default function MessageBubble({
           {new Date(timestamp).toLocaleTimeString([], {
             hour: '2-digit',
             minute: '2-digit',
+            hourCycle: 'h23',
           })}
         </time>
       </article>

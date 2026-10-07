@@ -1,11 +1,12 @@
 import type { ReactNode } from 'react';
-import { LogOut, Search } from 'lucide-react';
+import { LogOut } from 'lucide-react';
 import { Button } from '@components';
 
 type AppLayoutProps = {
   children: ReactNode;
   chatList: ReactNode;
   newChat: ReactNode;
+  search: ReactNode;
   isChatOpen: boolean;
   onDisconnect: () => void;
 };
@@ -14,6 +15,7 @@ export default function AppLayout({
   children,
   chatList,
   newChat,
+  search,
   isChatOpen,
   onDisconnect,
 }: AppLayoutProps) {
@@ -24,20 +26,11 @@ export default function AppLayout({
         aria-label="Chats"
       >
         <header className="flex items-center justify-between px-6 pt-7 pb-[19px]">
-          <div>
-            <p className="mb-[5px] text-[0.72rem] font-bold tracking-[0.09em] text-label uppercase">
-              GREEN-API
-            </p>
-            <h1 className="text-[1.45rem] font-bold tracking-[-0.03em]">
-              Messages
-            </h1>
-          </div>
-          <Button variant="ghost" size="icon" aria-label="Search chats">
-            <Search className="size-5" strokeWidth={1.8} aria-hidden="true" />
-          </Button>
+          <h1 className="text-3xl font-bold tracking-tight">Chats</h1>
+          {newChat}
         </header>
 
-        {newChat}
+        {search}
 
         <section
           className="flex min-h-0 flex-1 overflow-y-auto px-3 py-3.5"
@@ -46,18 +39,12 @@ export default function AppLayout({
           {chatList}
         </section>
 
-        <footer className="mx-6 mt-4 mb-[22px] flex items-center gap-2 text-[0.78rem] text-subtle">
-          <span
-            className="size-[7px] rounded-full bg-success"
-            aria-hidden="true"
-          />
-          Telegram connected
+        <footer className="flex shrink-0 justify-end px-6 py-3">
           <Button
             variant="ghost"
             size="icon"
             aria-label="Disconnect"
             onClick={onDisconnect}
-            className="ml-auto"
           >
             <LogOut className="size-5" aria-hidden="true" />
           </Button>

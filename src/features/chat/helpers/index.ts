@@ -1,0 +1,1 @@
+export { normalizeRecipient } from './normalizeRecipient';

@@ -1,0 +1,1 @@
+export { greenApiUrl } from './greenApiUrl';

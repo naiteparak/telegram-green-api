@@ -4,13 +4,15 @@ import { AppLayout } from '@app';
 import {
   ChatHeader,
   ChatList,
+  ChatSearch,
   MessageList,
   MessageComposer,
   NewChatForm,
-  mockChats,
-  mockMessages,
-  type Chat,
-  type Message,
+  useSendMessage,
+  useReceiveMessages,
+  useConversations,
+  useCreateChat,
+  normalizeRecipient,
   CredentialsForm,
   type Credentials,
 } from '@features';
@@ -18,43 +20,55 @@ import {
 export default function App() {
   const [credentials, setCredentials] = useState<Credentials | null>(null);
   const [selectedChatId, setSelectedChatId] = useState<string | null>(null);
-  const [messages, setMessages] = useState<Message[]>(mockMessages);
-  const [chats, setChats] = useState<Chat[]>(mockChats);
+  const [searchQuery, setSearchQuery] = useState('');
+  const {
+    chats,
+    messages,
+    addChat,
+    addSentMessage,
+    receiveMessage,
+    resolveChat,
+    clearConversations,
+  } = useConversations();
+  const { send, isSending, sendError } = useSendMessage(
+    credentials,
+    addSentMessage,
+    resolveChat,
+  );
+  useReceiveMessages(credentials, receiveMessage);
   const selectedChat = chats.find((chat) => chat.id === selectedChatId);
+  const { create, isCreating, createError, nameWarning } =
+    useCreateChat(credentials);
   const selectedMessages = messages
     .filter((message) => message.chatId === selectedChatId)
     .sort((first, second) => first.timestamp - second.timestamp);
 
-  function createChat(phone: string) {
-    const existingChat = chats.find(
-      (chat) => chat.phone.replace(/\D/g, '') === phone.replace(/\D/g, ''),
+  async function createChat(identifier: string): Promise<boolean> {
+    const recipient = normalizeRecipient(identifier);
+    const existingChat = chats.find((chat) =>
+      recipient.kind === 'phone'
+        ? Boolean(chat.phone) &&
+          chat.phone.replace(/\D/g, '') === recipient.value.slice(1)
+        : chat.username?.toLowerCase() === recipient.value,
     );
     if (existingChat) {
+      setSearchQuery('');
       setSelectedChatId(existingChat.id);
-      return;
+      return true;
     }
-    const chat: Chat = { id: crypto.randomUUID(), title: phone, phone };
-    setChats((previous) => [chat, ...previous]);
+    const chat = await create(recipient.value);
+    if (!chat) return false;
+    addChat(chat);
+    setSearchQuery('');
     setSelectedChatId(chat.id);
-  }
-
-  function sendMessage(text: string) {
-    if (!selectedChatId || !text.trim()) return;
-    const message: Message = {
-      id: crypto.randomUUID(),
-      chatId: selectedChatId,
-      text: text.trim(),
-      direction: 'outgoing',
-      timestamp: Date.now(),
-    };
-    setMessages((previous) => [...previous, message]);
+    return true;
   }
 
   function disconnect() {
     setCredentials(null);
+    setSearchQuery('');
     setSelectedChatId(null);
-    setChats(mockChats);
-    setMessages(mockMessages);
+    clearConversations();
   }
 
   if (!credentials) return <CredentialsForm onConnect={setCredentials} />;
@@ -63,13 +77,22 @@ export default function App() {
     <AppLayout
       isChatOpen={Boolean(selectedChat)}
       onDisconnect={disconnect}
-      newChat={<NewChatForm onCreateChat={createChat} />}
+      search={<ChatSearch value={searchQuery} onChange={setSearchQuery} />}
+      newChat={
+        <NewChatForm
+          onCreateChat={createChat}
+          isCreating={isCreating}
+          createError={createError}
+          nameWarning={nameWarning}
+        />
+      }
       chatList={
         <ChatList
           chats={chats}
           messages={messages}
           selectedChatId={selectedChatId}
           onSelectChat={setSelectedChatId}
+          searchQuery={searchQuery}
         />
       }
     >
@@ -80,7 +103,13 @@ export default function App() {
             onBack={() => setSelectedChatId(null)}
           />
           <MessageList messages={selectedMessages} />
-          <MessageComposer onSend={sendMessage} />
+          <MessageComposer
+            onSend={(text) => send(selectedChat, text)}
+            isSending={isSending}
+            error={
+              sendError?.chatId === selectedChat.id ? sendError.text : undefined
+            }
+          />
         </Fragment>
       ) : (
         <div className="grid min-h-0 flex-1 place-items-center">

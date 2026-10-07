@@ -19,7 +19,9 @@ export default function ChatHeader({ chat, onBack }: ChatHeaderProps) {
       <Avatar name={chat.title} />
       <div className="min-w-0">
         <h2 className="truncate font-semibold text-heading">{chat.title}</h2>
-        <p className="mt-0.5 text-sm text-muted">{chat.phone}</p>
+        <p className="mt-0.5 text-sm text-muted">
+          {chat.username || chat.phone}
+        </p>
       </div>
     </header>
   );
