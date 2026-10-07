@@ -10,3 +10,5 @@ export {
   mockMessages,
 } from './chat';
 export type { Chat, Message } from './chat';
+export { CredentialsForm } from './auth';
+export type { Credentials } from './auth';

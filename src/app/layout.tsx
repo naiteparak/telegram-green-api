@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { Search } from 'lucide-react';
+import { LogOut, Search } from 'lucide-react';
 import { Button } from '@components';
 
 type AppLayoutProps = {
@@ -7,6 +7,7 @@ type AppLayoutProps = {
   chatList: ReactNode;
   newChat: ReactNode;
   isChatOpen: boolean;
+  onDisconnect: () => void;
 };
 
 export default function AppLayout({
@@ -14,6 +15,7 @@ export default function AppLayout({
   chatList,
   newChat,
   isChatOpen,
+  onDisconnect,
 }: AppLayoutProps) {
   return (
     <div className="mx-auto h-dvh w-full max-w-[1440px] overflow-hidden bg-surface shadow-app min-[681px]:grid min-[681px]:grid-cols-[minmax(280px,356px)_minmax(0,1fr)]">
@@ -49,7 +51,16 @@ export default function AppLayout({
             className="size-[7px] rounded-full bg-success"
             aria-hidden="true"
           />
-          Ready to connect
+          Telegram connected
+          <Button
+            variant="ghost"
+            size="icon"
+            aria-label="Disconnect"
+            onClick={onDisconnect}
+            className="ml-auto"
+          >
+            <LogOut className="size-5" aria-hidden="true" />
+          </Button>
         </footer>
       </aside>
 

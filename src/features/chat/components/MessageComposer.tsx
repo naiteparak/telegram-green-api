@@ -23,7 +23,7 @@ export default function MessageComposer({ onSend }: MessageComposerProps) {
         sendDraft();
       }}
     >
-      <div className="flex items-end gap-2">
+      <div className="flex items-start gap-2">
         <label className="min-w-0 flex-1">
           <span className="sr-only">Message</span>
           <textarea

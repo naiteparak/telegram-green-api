@@ -11,9 +11,12 @@ import {
   mockMessages,
   type Chat,
   type Message,
+  CredentialsForm,
+  type Credentials,
 } from '@features';
 
 export default function App() {
+  const [credentials, setCredentials] = useState<Credentials | null>(null);
   const [selectedChatId, setSelectedChatId] = useState<string | null>(null);
   const [messages, setMessages] = useState<Message[]>(mockMessages);
   const [chats, setChats] = useState<Chat[]>(mockChats);
@@ -47,9 +50,19 @@ export default function App() {
     setMessages((previous) => [...previous, message]);
   }
 
+  function disconnect() {
+    setCredentials(null);
+    setSelectedChatId(null);
+    setChats(mockChats);
+    setMessages(mockMessages);
+  }
+
+  if (!credentials) return <CredentialsForm onConnect={setCredentials} />;
+
   return (
     <AppLayout
       isChatOpen={Boolean(selectedChat)}
+      onDisconnect={disconnect}
       newChat={<NewChatForm onCreateChat={createChat} />}
       chatList={
         <ChatList

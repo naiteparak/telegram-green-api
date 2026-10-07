@@ -1,0 +1,1 @@
+export { checkCredentials } from './checkCredentials';
