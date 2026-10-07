@@ -3,5 +3,6 @@ dist/
 *.tsbuildinfo
 *.js
 *.d.ts
+!src/vite-env.d.ts
 .idea/
 .DS_Store
